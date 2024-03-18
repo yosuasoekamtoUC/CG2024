@@ -1,14 +1,10 @@
-# This is a sample Python script.
-
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-background_image_filename = 'image/curve_pattern.png'
-sprite_image_filename = 'image/icon_speech.png'
-
 import pygame
 from pygame.locals import *
 from sys import exit
 import numpy as np
+
+background_image_filename = 'image/curve_pattern.png'
+sprite_image_filename = 'image/icon_speech.png'
 
 if __name__ == '__main__':
     pygame.init()
@@ -24,7 +20,6 @@ if __name__ == '__main__':
     clickCount = 0
     while loop:
         try:
-            # pygame.mouse.set_visible(False)
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     loop = False
