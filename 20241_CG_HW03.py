@@ -101,7 +101,18 @@ if __name__ == '__main__':
                     drawPolylines(GREEN, 1, clickCount)
                     drawLine(pts[0], pts[2], GREEN, 1)
                 else:
-                    pygame.draw.rect(screen, BLUE, (pt[0] - margin, pt[1] - margin, 2 * margin, 2 * margin), 5)
+                    # CHECK IF THE NEW POINT IS INSIDE TRIANGLE OR NOT
+                    ptA = pts[0]
+                    ptB = pts[1]
+                    ptC = pts[2]
+                    lambda1 = ((ptB[1] - ptC[1]) * (x - ptC[0]) + (ptC[0] - ptB[0]) * (y - ptC[1])) / ((ptB[1] - ptC[1]) * (ptA[0] - ptC[0]) + (ptC[0] - ptB[0]) * (ptA[1] - ptC[1]))
+                    lambda2 = ((ptC[1] - ptA[1]) * (x - ptC[0]) + (ptA[0] - ptC[0]) * (y - ptC[1])) / ((ptB[1] - ptC[1]) * (ptA[0] - ptC[0]) + (ptC[0] - ptB[0]) * (ptA[1] - ptC[1]))
+                    lambda3 = (1 - lambda1 - lambda2)
+                    print(lambda1, lambda2, lambda3)
+                    if (lambda1 + lambda2) < 1:
+                        pygame.draw.rect(screen, RED, (pt[0] - margin, pt[1] - margin, 2 * margin, 2 * margin), 5)
+                    else:
+                        pygame.draw.rect(screen, BLUE, (pt[0] - margin, pt[1] - margin, 2 * margin, 2 * margin), 5)
 
             # RELEASE LEFT MOUSE
             if event.type == pygame.MOUSEBUTTONUP:
