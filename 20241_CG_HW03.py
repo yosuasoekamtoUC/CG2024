@@ -13,10 +13,10 @@ BLUE = (0, 0, 255)
 GREEN = (0, 255, 0)
 RED = (255, 0, 0)
 
-def drawPoint(pt, color='GREEN', thick=3):
+def drawPoint(pt, color, thick):
     pygame.draw.circle(screen, color, pt, thick)
 
-def formula1(pt0, pt1, color, steps, thick=3):
+def formula1(pt0, pt1, color, steps, thick):
     # 1. y = (y1 - y0) / (x1 - x0) * (Xi - x0) + y0
     x0, y0 = pt0[0], pt0[1]
     x1, y1 = pt1[0], pt1[1]
@@ -26,7 +26,7 @@ def formula1(pt0, pt1, color, steps, thick=3):
         Yi = (y1 - y0) / (x1 - x0) * (Xi - x0) + y0
         drawPoint(np.array([Xi, Yi]), color, thick)
 
-def formula2(pt0, pt1, color, steps, thick=3, ):
+def formula2(pt0, pt1, color, steps, thick):
     #2. coordinate free system = (a0 * p0) + (a1 * p1)
     x0, y0 = pt0[0], pt0[1]
     x1, y1 = pt1[0], pt1[1]
@@ -35,7 +35,7 @@ def formula2(pt0, pt1, color, steps, thick=3, ):
         drawPoint(new_point, color, thick)
 
 # HW2 implement drawLine with drawPoint
-def drawLine(pt0, pt1, color='GREEN', thick=3):
+def drawLine(pt0, pt1, color, thick):
     pt0 = np.array(pt0, dtype = np.float32)
     pt1 = np.array(pt1, dtype = np.float32)
 
@@ -47,13 +47,14 @@ def drawLine(pt0, pt1, color='GREEN', thick=3):
     # formula1(pt0, pt1, 'RED', steps, thick)
 
     # 2. coordinate free system = (a0 * p0) + (a1 * p1)
-    formula2(pt0, pt1, 'BLACK', steps, thick)
+    formula2(pt0, pt1, color, steps, thick)
 
-def drawPolylines(color='GREEN', thick=3):
+def drawPolylines(color, thick, clickCount):
     if clickCount < 2:
         return
     for i in range(clickCount - 1):
-        drawLine(pts[i], pts[i+1], color)
+        drawLine(pts[i], pts[i + 1], color, thick)
+
 
 if __name__ == '__main__':
     pygame.init()
@@ -64,12 +65,13 @@ if __name__ == '__main__':
     background = pygame.image.load(background_image_filename).convert()
     width, height = background.get_size()
     screen = pygame.display.set_mode((width, height), 0, 32)
-    pygame.display.set_caption("20235164-CompGraphHW02")
+    pygame.display.set_caption("20235164-CompGraphHW03")
     screen.fill(WHITE)
     clock = pygame.time.Clock()
 
     loop = True
     press = False
+    barycentric = False
     margin = 5
 
     pts = []
@@ -85,17 +87,26 @@ if __name__ == '__main__':
             pt = [x, y]
             pygame.draw.circle(screen, RED, pt, 0)
 
-            if event.type == pygame.MOUSEBUTTONDOWN and press == False:
+            # PRESS LEFT MOUSE - CREATE POINTS
+            if event.type == pygame.MOUSEBUTTONDOWN and press == False and event.button == 1:
                 press = True
                 pts.append(pt)
                 clickCount += 1
-                pygame.draw.rect(screen, BLUE, (pt[0] - margin, pt[1] - margin, 2 * margin, 2 * margin), 5)
 
-                if len(pts) > 1:
-                    drawPolylines(GREEN, 1)
+                if clickCount < 3:
+                    pygame.draw.rect(screen, BLUE, (pt[0] - margin, pt[1] - margin, 2 * margin, 2 * margin), 5)
+                    drawPolylines(GREEN, 1, clickCount)
+                elif clickCount == 3:
+                    pygame.draw.rect(screen, BLUE, (pt[0] - margin, pt[1] - margin, 2 * margin, 2 * margin), 5)
+                    drawPolylines(GREEN, 1, clickCount)
+                    drawLine(pts[0], pts[2], GREEN, 1)
+                else:
+                    pygame.draw.rect(screen, BLUE, (pt[0] - margin, pt[1] - margin, 2 * margin, 2 * margin), 5)
 
+            # RELEASE LEFT MOUSE
             if event.type == pygame.MOUSEBUTTONUP:
                 press == False
+
 
             pygame.display.update()
             time_passed = clock.tick(1000)
