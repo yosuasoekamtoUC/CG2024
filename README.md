@@ -12,3 +12,7 @@ Dongseo University Computer Graphics Course 2024-1
 ## - Draw Polygon using The Coordinate-Free System:
 
 [![](https://img.youtube.com/vi/MeCY3oSWYek/0.jpg)](https://youtu.be/MeCY3oSWYek "Click to play on Youtube.com")
+
+## - Draw Affine Combination:
+
+[![](https://img.youtube.com/vi/0LO8Xp2pLLY/0.jpg)](https://youtu.be/0LO8Xp2pLLY "Click to play on Youtube.com")
