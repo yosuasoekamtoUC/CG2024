@@ -52,9 +52,23 @@ def drawLine(pt0, pt1, color, thick):
 def drawPolylines(color, thick, clickCount):
     if clickCount < 2:
         return
+    # for i in range(clickCount - 1):
+    #     drawLine(pts[i], pts[i + 1], color, thick)
     for i in range(clickCount - 1):
         drawLine(pts[i], pts[i + 1], color, thick)
+        if ((i - 1) % 3) == 0:
+            drawLine(pts[i - 1], pts[i + 1], color, thick)
 
+def printText(msg, color='BLACK', pos=(15,15)):
+    font = pygame.font.SysFont("calibri", 14)
+    textSurface = font.render(msg, True, pygame.Color(color), WHITE)
+    textRect = textSurface.get_rect()
+    textRect.topleft = pos
+    screen.blit(textSurface, textRect)
+
+def barycentricPoint(current_point, base_points):
+    [t0, t1] = np.matmul(np.linalg.inv(base_points), current_point)
+    return round(t0 ,3) , round(t1, 3), round(1 - t0 - t1, 3)
 
 if __name__ == '__main__':
     pygame.init()
@@ -87,6 +101,8 @@ if __name__ == '__main__':
             pt = [x, y]
             pygame.draw.circle(screen, RED, pt, 0)
 
+            pygame.draw.line(screen, (0, 255, 0), (0, 50), (1000, 50))
+
             # PRESS LEFT MOUSE - CREATE POINTS
             if event.type == pygame.MOUSEBUTTONDOWN and press == False and event.button == 1:
                 press = True
@@ -102,17 +118,16 @@ if __name__ == '__main__':
                     drawLine(pts[0], pts[2], GREEN, 1)
                 else:
                     # CHECK IF THE NEW POINT IS INSIDE TRIANGLE OR NOT
-                    ptA = pts[0]
-                    ptB = pts[1]
-                    ptC = pts[2]
-                    lambda1 = ((ptB[1] - ptC[1]) * (x - ptC[0]) + (ptC[0] - ptB[0]) * (y - ptC[1])) / ((ptB[1] - ptC[1]) * (ptA[0] - ptC[0]) + (ptC[0] - ptB[0]) * (ptA[1] - ptC[1]))
-                    lambda2 = ((ptC[1] - ptA[1]) * (x - ptC[0]) + (ptA[0] - ptC[0]) * (y - ptC[1])) / ((ptB[1] - ptC[1]) * (ptA[0] - ptC[0]) + (ptC[0] - ptB[0]) * (ptA[1] - ptC[1]))
-                    lambda3 = (1 - lambda1 - lambda2)
-                    print(lambda1, lambda2, lambda3)
-                    if (lambda1 + lambda2) < 1:
-                        pygame.draw.rect(screen, RED, (pt[0] - margin, pt[1] - margin, 2 * margin, 2 * margin), 5)
-                    else:
+                    base_points = np.transpose([np.subtract(pts[0], pts[2]), np.subtract(pts[1], pts[2])])
+                    current_point = np.subtract(pt, pts[2]).tolist()
+                    t0, t1, t2 = barycentricPoint(current_point, base_points)
+
+                    if t0 >= 0 and t1 >= 0 and t2 >= 0:
+                        printText("Current point is inside triangle", pos=(15, 15))
                         pygame.draw.rect(screen, BLUE, (pt[0] - margin, pt[1] - margin, 2 * margin, 2 * margin), 5)
+                    else:
+                        printText("Current point is outside triangle", pos=(15, 15))
+                        pygame.draw.rect(screen, RED, (pt[0] - margin, pt[1] - margin, 2 * margin, 2 * margin), 5)
 
             # RELEASE LEFT MOUSE
             if event.type == pygame.MOUSEBUTTONUP:
