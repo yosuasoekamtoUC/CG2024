@@ -16,3 +16,7 @@ Dongseo University Computer Graphics Course 2024-1
 ## - Draw Affine Combination:
 
 [![](https://img.youtube.com/vi/GC4lJLWNJDc/0.jpg)](https://youtu.be/GC4lJLWNJDc "Click to play on Youtube.com")
+
+## - Draw Lagrange, Bezier, Hermite, Cubic-Spline:
+
+[![](https://img.youtube.com/vi/ctbSj7s_L2c/0.jpg)](https://youtu.be/ctbSj7s_L2c "Click to play on Youtube.com")
