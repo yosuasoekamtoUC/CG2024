@@ -20,3 +20,7 @@ Dongseo University Computer Graphics Course 2024-1
 ## - Draw Lagrange, Bezier, Hermite, Cubic-Spline:
 
 [![](https://img.youtube.com/vi/ctbSj7s_L2c/0.jpg)](https://youtu.be/ctbSj7s_L2c "Click to play on Youtube.com")
+
+
+## - 
+[![](https://img.youtube.com/vi/6j8kaQvEtxg/0.jpg)](https://youtu.be/6j8kaQvEtxg "Just tap this!")
